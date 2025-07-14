@@ -3,40 +3,31 @@ import { useEffect, useState } from "react"
 import Comment from "./Comment"
 import CommentList from "./CommentList"
 
-function PostList(){
+function PostList() {
+  const [posts, setPosts] = useState({})
 
-    const[posts, setPosts]=useState({})
+  const fetchPost = async () => {
+    const res = await axios.get("http://localhost:4000/post")
+    setPosts(res.data)
+  }
 
-    const fetchPost=async ()=>{
+  useEffect(() => {
+    fetchPost()
+  }, [])
 
-        const res=await axios.get("http://localhost:4000/post")
-        setPosts(res.data)
-    }
+  const renderPost = Object.values(posts).map(post => (
+    <div className="post-card" key={post.id}>
+      <h2>{post.title}</h2>
+      <CommentList postId={post.id} />
+      <Comment postId={post.id} />
+    </div>
+  ))
 
-    useEffect(()=>{
-        
-        fetchPost()
-    }, [])
-
-    const renderPost=Object.values(posts).map(post=>{
-        return(
-            <div className="post-card" key={post.id}>
-                <div>
-                    <h2>{post.title}</h2>
-                </div>
-                <CommentList postId={post.id}/>
-                <Comment postId={post.id}/>
-            </div>
-        )
-    })
-
-
-    return(
-        <div className="postlist">
-            {renderPost}
-           
-        </div>
-    )
+  return (
+    <div className="postlist">
+      {renderPost}
+    </div>
+  )
 }
 
 export default PostList
