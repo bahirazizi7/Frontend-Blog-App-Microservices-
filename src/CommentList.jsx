@@ -1,17 +1,13 @@
 import axios from "axios";
 
 function CommentList({ comments }) {
+  console.log("commnet portion",comments);
   return (
     <ul>
-      {comments.map((comment) => (
+      {comments.map(comment => (
         <li key={comment.id}>
-
-          <ul>
-            {comment.comments.map((c) => (
-              <li key={c.id}>{c.content}</li>
-            ))}
-          </ul>
-        </li>
+          <strong>{comment.content}</strong>
+        </li>   
       ))}
     </ul>
   );
